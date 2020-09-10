@@ -16,7 +16,7 @@ map_uidgid() {
 
 set_permissions() {
     # Set permissions for consumption and export directory
-    for dir in PAPERLESS_CONSUMPTION_DIR PAPERLESS_EXPORT_DIR; do
+    for dir in PAPERLESS_CONSUMPTION_DIR PAPERLESS_EXPORT_DIR PAPERLESS_STATICDIR; do
       # Extract the name of the current directory from $dir for the error message
       cur_dir_name=$(echo "$dir" | awk -F'_' '{ print tolower($2); }')
       chgrp paperless "${!dir}" || {
@@ -53,6 +53,10 @@ migrations() {
         sudo -HEu paperless "/usr/src/paperless/src/manage.py" "migrate"
         rm ${LOCKFILE}
     fi
+}
+
+collectstatic() {
+    sudo -HEu paperless "/usr/src/paperless/src/manage.py" "collectstatic" "--clear" "--no-input"
 }
 
 initialize() {
@@ -93,6 +97,10 @@ install_languages() {
 
 if [[ "$1" != "/"* ]]; then
     initialize
+
+    if [[ "$1" = "webserver" ]]; then
+	collectstatic	
+    fi
 
     # Install additional languages if specified
     if [[ ! -z "$PAPERLESS_OCR_LANGUAGES"  ]]; then

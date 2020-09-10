@@ -11,7 +11,9 @@ COPY scripts/gunicorn.conf /usr/src/paperless/
 
 # Set export and consumption directories
 ENV PAPERLESS_EXPORT_DIR=/export \
-    PAPERLESS_CONSUMPTION_DIR=/consume
+    PAPERLESS_CONSUMPTION_DIR=/consume \
+    PAPERLESS_HOOKS_DIR=/hooks \
+    PAPERLESS_STATIC_DIR=/static
 
 RUN apk add --no-cache \
       bash \
@@ -53,6 +55,12 @@ RUN apk add --no-cache \
     adduser -D -u 1000 -G paperless -h /usr/src/paperless paperless && \
     chown -Rh paperless:paperless /usr/src/paperless && \
     mkdir -p $PAPERLESS_EXPORT_DIR && \
+    chown -Rh paperless:paperless $PAPERLESS_EXPORT_DIR && \
+    mkdir -p $PAPERLESS_HOOKS_DIR && \
+# Create static dir and set permissions
+    mkdir -p $PAPERLESS_STATIC_DIR && \
+    chown -Rh paperless:paperless $PAPERLESS_STATIC_DIR && \
+    chmod -R g+wx $PAPERLESS_STATIC_DIR && \
 # Avoid setrlimit warnings
 # See: https://gitlab.alpinelinux.org/alpine/aports/issues/11122
     echo 'Set disable_coredump false' >> /etc/sudo.conf && \
@@ -61,7 +69,7 @@ RUN apk add --no-cache \
 
 WORKDIR /usr/src/paperless/src
 # Mount volumes and set Entrypoint
-VOLUME ["/usr/src/paperless/data", "/usr/src/paperless/media", "/consume", "/export"]
+VOLUME ["/usr/src/paperless/data", "/usr/src/paperless/media", "/consume", "/export", "/hooks", "/static"]
 ENTRYPOINT ["/sbin/docker-entrypoint.sh"]
 CMD ["--help"]
 
