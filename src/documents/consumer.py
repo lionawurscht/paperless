@@ -178,6 +178,7 @@ class Consumer:
             document_consumption_finished.send(
                 sender=self.__class__,
                 document=document,
+                filename=doc,
                 logging_group=self.logging_group
             )
             return True

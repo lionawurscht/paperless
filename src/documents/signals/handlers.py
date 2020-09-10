@@ -69,7 +69,7 @@ def run_pre_consume_script(sender, filename, **kwargs):
     Popen((settings.PRE_CONSUME_SCRIPT, filename)).wait()
 
 
-def run_post_consume_script(sender, document, **kwargs):
+def run_post_consume_script(sender, document, filename, **kwargs):
 
     if not settings.POST_CONSUME_SCRIPT:
         return
@@ -83,7 +83,8 @@ def run_post_consume_script(sender, document, **kwargs):
         document.download_url,
         document.thumbnail_url,
         str(document.correspondent),
-        str(",".join(document.tags.all().values_list("slug", flat=True)))
+        str(",".join(document.tags.all().values_list("slug", flat=True))),
+        filename
     )).wait()
 
 
