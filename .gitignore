@@ -81,5 +81,15 @@ docker-compose.env
 scripts/import-for-development
 scripts/nuke
 
+# Scans
+scans/
+scans
+
 # Static files collected by the collectstatic command
-./static/
+static/
+
+# Exported files
+export/
+
+# Exported files
+hooks/
