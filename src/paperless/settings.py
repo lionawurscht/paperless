@@ -60,6 +60,9 @@ if _allowed_hosts:
     ALLOWED_HOSTS = _allowed_hosts.split(",")
 
 FORCE_SCRIPT_NAME = os.getenv("PAPERLESS_FORCE_SCRIPT_NAME")
+USE_X_FORWARDED_HOST = __get_boolean("PAPERLESS_USE_X_FORWARDED_HOST")
+
+__script_name = FORCE_SCRIPT_NAME or "/"
 
 # Application definition
 
@@ -204,12 +207,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_ROOT = os.getenv(
-    "PAPERLESS_STATICDIR", os.path.join(BASE_DIR, "..", "static"))
+    "PAPERLESS_STATICDIR", os.path.join(BASE_DIR, "..", "/static"))
 MEDIA_ROOT = os.getenv(
-    "PAPERLESS_MEDIADIR", os.path.join(BASE_DIR, "..", "media"))
+    "PAPERLESS_MEDIADIR", os.path.join(BASE_DIR, "..", "/media"))
 
-STATIC_URL = os.getenv("PAPERLESS_STATIC_URL", "/static/")
-MEDIA_URL = os.getenv("PAPERLESS_MEDIA_URL", "/media/")
+STATIC_URL = os.getenv("PAPERLESS_STATIC_URL", "static/")
+MEDIA_URL = os.getenv("PAPERLESS_MEDIA_URL", "media/")
 
 
 # Other
