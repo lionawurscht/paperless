@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-#rclone sync /home/paperless/paperless_scans google-drive_extra-lion-w:paperless_scans &
 
 NOW="$(date)"
 
