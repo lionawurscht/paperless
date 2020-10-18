@@ -91,3 +91,6 @@ static/
 # Exported files
 export/
 
+# Utility files
+hooks/finisched
+
