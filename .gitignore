@@ -91,5 +91,3 @@ static/
 # Exported files
 export/
 
-# Exported files
-hooks/
